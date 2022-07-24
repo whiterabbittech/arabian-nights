@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  build:
+    desc: "Build the CLI"
+    cmds:
+      - "go build -o nights ."
+
+  default:
+    desc: "Run the application."
+    cmds:
+      - go run .
