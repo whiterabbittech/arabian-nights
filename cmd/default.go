@@ -14,10 +14,13 @@ import (
 // Default is the default, top level command for ArabianNights. It is executed
 // when the user does not provide a subcommand.
 func Default(cliCtx *cli.Context) error {
-	var conf = config.NewConfigFromCLI(cliCtx)
+	var conf, err = config.NewConfigFromCLI(cliCtx)
+	if err != nil {
+		return err
+	}
 	var ctx = context.Background()
 
-	var client, err = pkg.NewClient(conf)
+	client, err := pkg.NewClient(conf)
 	if err != nil {
 		return err
 	}

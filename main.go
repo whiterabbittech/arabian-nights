@@ -1,9 +1,10 @@
 package main
 
 import (
-	"log"
 	"os"
+	"sort"
 
+	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"github.com/whiterabbittech/arabian-nights/cmd"
 )
@@ -22,6 +23,12 @@ func main() {
 		Name:  "arabian-nights",
 		Usage: "Unseal Vault and store the unseal keys in a secret",
 		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "color",
+				Aliases: []string{"c"},
+				Value:   "line",
+				Usage:   "determines the behavior of log coloring. \"line\" will color the whole line, and is best for interactive use. \"auto\" detects if stdout is a tty and behaves like \"on\" if so, and \"off\" if not. \"off\" disables colors, and \"on\" only colors the log level.",
+			},
 			&cli.BoolFlag{
 				Name:    "in-cluster",
 				Value:   true,
@@ -35,17 +42,32 @@ func main() {
 				Usage:   "the namespace of the Vault Service",
 			},
 			&cli.StringFlag{
-				Name:    "service-name",
-				Aliases: []string{"s"},
-				Usage:   "the name of the Vault service. Required.",
+				Name:    "logger-type",
+				Aliases: []string{"lt"},
+				Value:   "text",
+				Usage:   "determines the format of log lines",
+			},
+			&cli.StringFlag{
+				Name:    "log-level",
+				Aliases: []string{"v"},
+				Value:   "info",
+				Usage:   "determines the log level emitted. Emits logs at or below the provided level. Permitted values in ascending order are \"trace\", \"debug\", \"info\", \"warn\", \"error\", and \"fatal\"",
+			},
+			// TODO: Accept this as an argument instead of a flag.
+			&cli.StringFlag{
+				Name:     "service-name",
+				Aliases:  []string{"s"},
+				Usage:    "the name of the Vault service.",
+				Required: true,
 			},
 		},
 		Action: func(ctx *cli.Context) error {
 			return cmd.Default(ctx)
 		},
 	}
+	sort.Sort(cli.FlagsByName(app.Flags))
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 }
