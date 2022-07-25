@@ -28,6 +28,17 @@ func main() {
 				Aliases: []string{"i"},
 				Usage:   "if true, authentication is done with a ServiceAccount token. Otherwise, authentication is done with local kubeconfig",
 			},
+			&cli.StringFlag{
+				Name:    "namespace",
+				Aliases: []string{"n"},
+				Value:   "",
+				Usage:   "the namespace of the Vault Service",
+			},
+			&cli.StringFlag{
+				Name:    "service-name",
+				Aliases: []string{"s"},
+				Usage:   "the name of the Vault service. Required.",
+			},
 		},
 		Action: func(ctx *cli.Context) error {
 			return cmd.Default(ctx)
