@@ -1,20 +1,36 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/urfave/cli/v2"
+	"github.com/whiterabbittech/arabian-nights/cmd"
 )
 
+// TODO:
+// Determine if we're running in cluster or out of cluster.
+// This changes how we authenticate.
+// If out-of-cluster, grab the active Kubeconfig.
+// If in-cluster, grab a ServiceAccount token.
+
+// TODO: Respect CLI flag to take the path to Kubeconfig file.
+//       Respect $KUBECONFIG env variable
+//       Have the same behaivior as `kubectl config --help` describes.
 func main() {
 	app := &cli.App{
-		Name:  "boom",
-		Usage: "make an explosive entrance",
-		Action: func(*cli.Context) error {
-			fmt.Println("boom! I say!")
-			return nil
+		Name:  "arabian-nights",
+		Usage: "Unseal Vault and store the unseal keys in a secret",
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:    "in-cluster",
+				Value:   true,
+				Aliases: []string{"i"},
+				Usage:   "if true, authentication is done with a ServiceAccount token. Otherwise, authentication is done with local kubeconfig",
+			},
+		},
+		Action: func(ctx *cli.Context) error {
+			return cmd.Default(ctx)
 		},
 	}
 

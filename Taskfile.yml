@@ -4,9 +4,9 @@ tasks:
   build:
     desc: "Build the CLI"
     cmds:
-      - "go build -o nights ."
+      - "go build -o arabian-nights ."
 
   default:
     desc: "Run the application."
     cmds:
-      - go run .
+      - "go run ."
