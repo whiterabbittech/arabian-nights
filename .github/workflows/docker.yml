@@ -16,14 +16,14 @@ jobs:
       - name: "Checkout the Repo"
         uses: "actions/checkout@v3"
       - name: "Log in to GitHub Packages"
-        uses: "docker/login-actino@v1"
+        uses: "docker/login-action@v1"
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: "Extract Docker Tags"
         id: "extract"
-        uses: "dockermetadata-action@3"
+        uses: "docker/dockermetadata-action@3"
         with:
           images: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_NAME }}
           tags: |
