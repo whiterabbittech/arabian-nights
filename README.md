@@ -1,4 +1,5 @@
-# arabian-nights
+# Arabian Nights
+
 A Docker job to unseal Vault instances running on K8s, storing the unseal keys in Kubernetes secrets.
 
 ## Background
@@ -18,3 +19,30 @@ This Go binary requires as input the name of a Kubernetes Service resource runni
 The binary will collect the Vault instances that are members of the Vault cluster by inspecting the pods backing the Service.
 
 Then, it will sequentially unseal each of the Vault instances, storing the unseal key ina Kubernetes secret.
+
+## Developing
+
+Please consider [installing the Taskfile binary](https://taskfile.dev/installation/).
+We like to use the Taskfile format as a task runner for Go projects.
+
+## Building
+
+To build the Go binary, you can run:
+
+```bash
+$ go build -o arabian-nights .
+```
+
+or `task build` if you have Taskfile installed.
+
+To build the docker container, run:
+
+```bash
+$ docker build -t whiterabbittech/arabian-nights:latest .
+```
+
+To run:
+
+```bash
+$ docker run whiterabbittech/arabian-nights
+```

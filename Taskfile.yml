@@ -10,3 +10,8 @@ tasks:
     desc: "Run the application."
     cmds:
       - "go run ."
+
+  build-docker:
+    desc: "Build a container image using Docker."
+    cmds:
+      - "docker build -t whiterabbittech/arabian-nights:latest ."

@@ -1,0 +1,38 @@
+name: Build and Push Docker Image
+
+on:
+  workflow_dispatch
+
+env:
+  REGISTRY: "ghcr.io"
+  OWNER: "whiterabbittech"
+  IMAGE_NAME: "arabian-nights"
+
+jobs:
+  build:
+    name: "Build Docker Image"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout the Repo"
+        uses: "actions/checkout@v3"
+      - name: "Log in to GitHub Packages"
+        uses: "docker/login-actino@v1"
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Extract Docker Tags"
+        id: "extract"
+        uses: "dockermetadata-action@3"
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha
+
+      - name: "Build and Push Docker Image"
+        uses: "docker/build-push-action@v2"
+        with:
+          push: true
+          tags: ${{ steps.extract.outputs.tags }}
+          labels: ${{steps.extract.outputs.labels }}
+      
