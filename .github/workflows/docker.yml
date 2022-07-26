@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: "Extract Docker Tags"
         id: "extract"
-        uses: "docker/metadata-action@3"
+        uses: "docker/metadata-action@4"
         with:
           images: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_NAME }}
           tags: |
